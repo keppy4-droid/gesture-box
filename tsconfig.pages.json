@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "types": ["node", "vite/client"],
+    "paths": { "@/*": ["./*"] }
+  },
+  "include": [
+    "app/main.tsx",
+    "app/page.tsx",
+    "components/ui/*.tsx",
+    "hooks/*.ts",
+    "lib/game.ts",
+    "lib/hints.ts",
+    "lib/prompts.ts",
+    "lib/utils.ts",
+    "lib/browser-prompts.ts",
+    "tests/*.ts",
+    "vite.pages.config.ts"
+  ]
+}

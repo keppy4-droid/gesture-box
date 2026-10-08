@@ -1,24 +1,57 @@
 # ジェスチャーBOX
 
-日本語のジェスチャーゲームのソース一式です。
+日本語のジェスチャーゲーム。お題の抽選・ヒント・制限時間に対応しています。
+GitHub Pages版はブラウザーだけで動作し、サーバーやデータベースは不要です。
 
-## ソースコード
+## お題を増やす
 
-[gesture-box-source.zip](gesture-box-source.zip) をダウンロードし、展開してください。アプリ、設定ファイル、依存関係のロックファイル、データベース定義を含みます。
+1. VS Codeで `lib/お題.ts` を開きます。
+2. `groups` 内のカテゴリーに `|新しいお題` を追加します。例：`犬|猫|ウサギ|ハムスター`。
+3. `actors` と `actions` を増やすと「だれが × なにを」の難しいお題が組み合わせで増えます。
+4. 保存し、ソース管理で「コミットとプッシュ」を実行します。
+5. GitHubのActionsで「Publish Gesture BOX」が成功すると、公開サイトに反映されます。
 
-このリポジトリではソースをZIP形式で保管しています。展開後の `gesture-box/README.md` に開発環境の起動方法があります。
+引用符や `.split("|")` は残してください。同じ難易度の重複や空のお題はテストが検出し、公開を止めます。表示件数は自動計算されます。追加したお題にはカテゴリーに応じたヒントが表示されます。
 
-## 含まれる最新版の機能
+画面のフォームで追加したお題は、その端末・ブラウザーのlocalStorageに保存されます。別の端末や利用者には共有されず、ブラウザーのサイトデータを消すと削除されます。全員に配信するお題は `lib/お題.ts` から追加してください。
 
-- 普通250題：動物・日常動作・スポーツ・職業・場所
-- 難しい350題：動作の組み合わせ300題と有名な観光地50題
-- お題を表示したままヒントを開閉
-- 任意の制限時間（5〜600秒）
-- サイトからオリジナルのお題を追加・保存
-- ミュシャ《黄道十二宮》をイメージした配色
+## GitHub Pagesの初回設定
 
-React / TypeScript / Vinext / Cloudflare Workers / D1を使用しています。
+このリポジトリ `keppy4-droid/gesture-box` の Settings → Pages → Build and deployment → Source で **GitHub Actions** を選びます。
+現在のプランで非公開リポジトリのPagesが使えない場合は、リポジトリの公開または対応するGitHubプランが必要です。
 
-GitHubへの保存だけでは公開サイトは更新されません。このZIPには、公開サイトへの反映がまだ完了していないヒント機能と難易度の変更も含みます。
+初回はActions → Publish Gesture BOX → Run workflowを実行します。その後はmainへのプッシュで自動公開されます。
+公開成功後の標準URLは `https://keppy4-droid.github.io/gesture-box/` です。
 
-APIキー、認証情報、利用者が保存したデータ、依存ライブラリの実体は含みません。
+## ローカルで起動
+
+Node.js 24とnpmを用意して実行します。
+
+```sh
+npm ci
+npm run dev
+```
+
+ローカルURL：`http://127.0.0.1:5173/gesture-box/`
+
+```sh
+npm test
+npm run build
+npm run preview
+```
+
+公開用ファイルは `dist-pages/` に生成されます。Pagesのフォルダー名を変更する場合は `vite.pages.config.ts` のbaseを変更します。
+
+## 主なファイル
+
+- `lib/お題.ts`：全員に配信するお題
+- `lib/hints.ts`：演じ方のヒント
+- `app/page.tsx`、`app/globals.css`：画面とデザイン
+- `hooks/`：タイマー、ブラウザー保存、ブラウザー連携
+- `lib/browser-prompts.ts`：ブラウザー保存と入力確認
+- `index.html`、`app/main.tsx`、`vite.pages.config.ts`：Pages版の入口とビルド設定
+- `.github/workflows/pages.yml`：テストと自動公開
+
+以前のSites版は既存ZIPと履歴から確認できます。Pages版にサーバー・データベースは不要です。ローカルに保存されていたデータベースは移行元フォルダーに残し、変更しません。
+
+
